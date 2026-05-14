@@ -1,3 +1,4 @@
+ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 // VARIABLES 
 int lifes = 3; 
 boolean Gameover = false;
@@ -11,14 +12,13 @@ int playXV = 0;
 int bulletX;
 int bulletY;
 
-// bullet state
-boolean shooting = false;
 void setup() {
+  pixelDensity(2);
   frameRate(120);
   size(900,900, P2D);
 
   Pphoto = loadImage("Player.png");
-  Ephoto = loadImage("enemies.jpg");
+  Ephoto = loadImage("enemies.png");
   Bphoto = loadImage("Background.jpg");
   Sphoto = loadImage("bullets.png");
 
@@ -39,15 +39,17 @@ void draw(){
   playerX += playXV;
   playerX = constrain(playerX, 0, width - 140);
   
-  //Bullets shooting
-  if (shooting) {
+ // Bullets
+  for (int i = bullets.size()-1; i >= 0; i--) {
 
-    image(Sphoto, bulletX, bulletY);
+    Bullet b = bullets.get(i);
 
-    bulletY -= 10;
+    b.update();
+    b.display();
 
-  if (bulletY < 0) {
-    shooting = false;
+    // remove off screen bullets
+    if (b.y < -50) {
+      bullets.remove(i);
     }
   }
   
@@ -65,7 +67,7 @@ void draw(){
 
 void keyPressed(){
     if (key == 'a') {
-      playXV = -5;
+      playXV = -5; 
     }
 
     // move right
@@ -74,11 +76,7 @@ void keyPressed(){
     }
    if (key == ' ') {
 
-    // start bullet at player
-    bulletX = playerX + 65;
-    bulletY = 720;
-
-    shooting = true;
+      bullets.add(new Bullet(playerX + 65, 735));
   }
   }
 void keyReleased(){
