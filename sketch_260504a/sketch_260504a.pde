@@ -1,3 +1,4 @@
+ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 // VARIABLES 
 int lifes = 3; 
@@ -26,32 +27,56 @@ void setup() {
   Ephoto.resize(100,100);
   Pphoto.resize(140,140);
   Sphoto.resize(10,10);
+  //enemies 
+  for (int i = 0; i < 3; i++) {
+
+  enemies.add(new Enemy());
+}
 }
 
 void draw(){ 
  
   // Background
   image(Bphoto,0,0);
-  image(Ephoto,100,100);
   image(Pphoto,playerX,720);
+  for (Enemy e : enemies) {
+
+  e.move();
+  e.display();
+}
+
   
   //PlayerXV
   playerX += playXV;
   playerX = constrain(playerX, 0, width - 140);
   
  // Bullets
-  for (int i = bullets.size()-1; i >= 0; i--) {
+for (int i = bullets.size()-1; i >= 0; i--) {
 
-    Bullet b = bullets.get(i);
+  Bullet b = bullets.get(i);
 
-    b.update();
-    b.display();
+  b.update();
+  b.display();
 
-    // remove off screen bullets
-    if (b.y < -50) {
-      bullets.remove(i);
+  // remove bullet
+  if (b.by < 0) {
+    bullets.remove(i);
+  }
+
+  // hit enemy
+  for (int j = enemies.size()-1; j >= 0; j--) {
+
+    Enemy e = enemies.get(j);
+
+    if (dist(b.bx, b.by, e.ex, e.ey) < 50) {
+
+      enemies.remove(j);
+      enemies.add(new Enemy());
     }
   }
+}
+    
+  
   
   // GAME OVER SCREEN
   if (Gameover) { 
@@ -78,6 +103,9 @@ void keyPressed(){
 
       bullets.add(new Bullet(playerX + 65, 735));
   }
+  //if (key == " r "){
+    //reset();
+ // }
   }
 void keyReleased(){
   if (key == 'a') {
@@ -89,3 +117,6 @@ void keyReleased(){
       playXV = 0;
     }
 }
+
+//void reset();
+  

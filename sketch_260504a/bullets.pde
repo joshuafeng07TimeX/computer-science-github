@@ -1,21 +1,21 @@
 class Bullet {
 
-  int x;
-  int y;
+  int bx;
+  int by;
 
   Bullet(int tempX, int tempY) {
 
-    x = tempX;
-    y = tempY;
+    bx = tempX;
+    by = tempY;
   }
 
   void update() {
 
-    y -= 10;
+    by -= 10;
   }
 
   void display() {
 
-    image(Sphoto, x, y);
+    image(Sphoto, bx, by);
   }
 }
